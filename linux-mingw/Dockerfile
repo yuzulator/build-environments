@@ -1,12 +1,43 @@
-FROM ubuntu:18.04
+FROM archlinux:latest
 MAINTAINER yuzu
 RUN useradd -m -s /bin/bash yuzu && mkdir -p /tmp/pkgs
-RUN apt-get update && apt-get install -y gpg wget git python3-pip python ccache p7zip-full g++-mingw-w64-x86-64 gcc-mingw-w64-x86-64 mingw-w64-tools cmake ninja-build
-# workaround broken headers in Ubuntu MinGW package
-COPY errno.h /usr/x86_64-w64-mingw32/include/
-# add mingw-w64 auxiliary ppa repository
-RUN echo 'deb http://ppa.launchpad.net/tobydox/mingw-w64/ubuntu bionic main ' > /etc/apt/sources.list.d/extras.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv '72931B477E22FEFD47F8DECE02FE5F12ADDE29B2' && apt-get update
-RUN apt-get install -y sdl2-mingw-w64 qt5base-mingw-w64 qt5tools-mingw-w64 libsamplerate-mingw-w64 qt5multimedia-mingw-w64
+# Add mingw-repo "ownstuff" is a AUR with an up to date mingw64
+RUN echo "[ownstuff]" >> /etc/pacman.conf \
+    && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
+    && echo "Server = https://martchus.no-ip.biz/repo/arch/ownstuff/os/\$arch" >> /etc/pacman.conf
+RUN pacman -Syu --noconfirm
+RUN pacman -Syu --noconfirm
+RUN pacman -S --needed --noconfirm --noprogressbar \
+    base-devel \
+    gnupg \
+    wget \
+    git \
+    python-pip \
+    python \
+    ccache \
+    p7zip \
+    cmake \
+    ninja \
+    mingw-w64-gcc \
+    mingw-w64-tools \
+    mingw-w64-sdl2 \
+    mingw-w64-qt5-base \
+    mingw-w64-qt5-tools \
+    mingw-w64-qt5-graphicaleffects \
+    mingw-w64-qt5-multimedia \
+    mingw-w64-qt5-winextras \
+    python2 \
+    mingw-w64-opus \
+    mingw-w64-winpthreads
+
 COPY mingw-setup.sh /tmp/pkgs
 RUN cd /tmp/pkgs && bash -e mingw-setup.sh
+# Compatibility with the old Ubuntu MingW image
+RUN ln -s /usr/x86_64-w64-mingw32/lib/qt /usr/x86_64-w64-mingw32/lib/qt5
+
+# Cleanup
+USER root
+RUN pacman -Scc --noconfirm
+RUN rm -rf /usr/share/man/*; \
+    rm -rf /tmp/*; \
+    rm -rf /var/tmp/*;

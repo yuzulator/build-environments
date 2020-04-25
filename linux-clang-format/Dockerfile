@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER yuzu
 RUN useradd -m -s /bin/bash yuzu
 RUN apt-get update && apt-get -y full-upgrade
