@@ -15,3 +15,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     ccache \
     cmake \
     ninja-build
+
+# cleanup all extra information that apt may be caching to save storage space
+RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
