@@ -1,13 +1,13 @@
 FROM archlinux:latest
 MAINTAINER yuzu
-RUN useradd -m -s /bin/bash yuzu && mkdir -p /tmp/pkgs
 # Add mingw-repo "ownstuff" is a AUR with an up to date mingw64
-RUN echo "[ownstuff]" >> /etc/pacman.conf \
-    && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
-    && echo "Server = https://martchus.no-ip.biz/repo/arch/ownstuff/os/\$arch" >> /etc/pacman.conf
-RUN pacman -Syu --noconfirm
-RUN pacman -Syu --noconfirm
-RUN pacman -S --needed --noconfirm --noprogressbar \
+RUN useradd -m -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
+    echo "[ownstuff]" >> /etc/pacman.conf && \
+    echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
+    echo "Server = https://martchus.no-ip.biz/repo/arch/ownstuff/os/\$arch" >> /etc/pacman.conf && \
+    pacman -Syu --noconfirm && \
+    pacman -Syu --noconfirm && \
+    pacman -S --needed --noconfirm --noprogressbar \
     base-devel \
     gnupg \
     wget \
@@ -28,16 +28,14 @@ RUN pacman -S --needed --noconfirm --noprogressbar \
     mingw-w64-qt5-winextras \
     python2 \
     mingw-w64-opus \
-    mingw-w64-winpthreads
+    mingw-w64-winpthreads && \
+    pacman -Scc --noconfirm && \
+    rm -rf /usr/share/man/ /tmp/ /var/tmp/
 
-COPY mingw-setup.sh /tmp/pkgs
-RUN cd /tmp/pkgs && bash -e mingw-setup.sh
+COPY mingw-setup.sh /tmp/
+RUN cd /tmp/ && bash -e mingw-setup.sh
 # Compatibility with the old Ubuntu MingW image
 RUN ln -s /usr/x86_64-w64-mingw32/lib/qt /usr/x86_64-w64-mingw32/lib/qt5
 
 # Cleanup
 USER root
-RUN pacman -Scc --noconfirm
-RUN rm -rf /usr/share/man/*; \
-    rm -rf /tmp/*; \
-    rm -rf /var/tmp/*;
