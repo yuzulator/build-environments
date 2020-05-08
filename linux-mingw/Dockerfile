@@ -3,7 +3,7 @@ MAINTAINER yuzu
 # Add mingw-repo "ownstuff" is a AUR with an up to date mingw64
 # Runs pacman -Syu twice in order to work around pacman issues where the first run only updates the current distro packages
 # and the second run actually pulls the updates from the repos.
-RUN useradd -m -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
+RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     echo "[ownstuff]" >> /etc/pacman.conf && \
     echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
     echo "Server = https://martchus.no-ip.biz/repo/arch/ownstuff/os/\$arch" >> /etc/pacman.conf && \
@@ -48,7 +48,7 @@ RUN ln -s /usr/x86_64-w64-mingw32/lib/qt /usr/x86_64-w64-mingw32/lib/qt5
 # Install conan and add the mingw cross compile as the default profile
 RUN pip3 install conan
 COPY --chown=yuzu:yuzu default /home/yuzu/.conan/profiles/
-USER yuzu
+USER 1027
 # Install/build the missing libs (uses the default mingw cross compile profile)
 RUN conan install catch2/2.11.0@ --build=missing && \
     conan install fmt/6.2.0@ --build=missing && \
