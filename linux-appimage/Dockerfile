@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-MAINTAINER qurious-pixel
+MAINTAINER quriouspixel
 # Create a user account yuzu (UID 1027) that the container will run as
 RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y full-upgrade && \
@@ -16,7 +16,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     python \
     python3-pip \
     qtbase5-dev \
-    qtbase5-private-dev \
+    qtbase5-private-dev \qttools5-dev \
     qtwebengine5-dev \
     libqt5opengl5-dev \
     wget \
