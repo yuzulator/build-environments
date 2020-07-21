@@ -14,7 +14,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libzstd-dev \
     zlib1g-dev \
     python \
-    python3-pip \
+    python-pip \
     qtbase5-dev \
     qtbase5-private-dev \
     qttools5-dev \
@@ -26,7 +26,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     ccache \
     cmake \
     ninja-build && \
-    pip3 install conan && \
+    pip install conan && \
     apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 USER 1027
 RUN conan install catch2/2.11.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
