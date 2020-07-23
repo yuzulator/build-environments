@@ -14,6 +14,8 @@ ENV GXX_BINARY=g++-${GCCVER}
 
 # Create a user account yuzu (UID 1027) that the container will run as
 RUN useradd -m -u 1027 -s /bin/bash yuzu && \
+    apt-get update -y && \
+    apt-get install -y curl software-properties-common apt-transport-https && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y full-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
