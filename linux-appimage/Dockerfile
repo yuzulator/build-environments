@@ -46,10 +46,16 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     pip install conan && \
     apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
     
+RUN \
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCCVER} 10 \
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCCVER} 10 \
+	gcc --version \
+	g++ --version 
+    
 ENV CMAKEVER=3.18.0
 RUN \
 	curl -sLO https://cmake.org/files/v${CMAKEVER%.*}/cmake-${CMAKEVER}-Linux-x86_64.sh && \
-	sh cmake-${CMAKEVER}-Linux-x86_64.sh --skip-license && \
+	sh cmake-${CMAKEVER}-Linux-x86_64.sh --prefix=/usr --skip-license && \
 	rm ./cmake*.sh && \
 	cmake --version
 	
