@@ -59,6 +59,16 @@ RUN \
 	sh cmake-${CMAKEVER}-Linux-x86_64.sh --prefix=/usr --skip-license && \
 	rm ./cmake*.sh && \
 	cmake --version
+
+ENV LIBZIPVER=1.7.3
+RUN \
+	curl -sLO https://libzip.org/download/libzip-${LIBZIPVER}.tar.gz && \
+	tar -xzf libzip-${LIBZIPVER}.tar.gz && \
+	cd libzip-${LIBZIPVER} && \
+	mkdir build && cd build && \
+	cmake .. -DCMAKE_INSTALL_PREFIX=/usr && \
+	make && make install && \
+	rm ../../libzip-${LIBZIPVER}.tar.gz 
 	
 RUN 	apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 
