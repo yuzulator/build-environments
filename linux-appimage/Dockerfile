@@ -17,6 +17,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     apt-get update -y && \
     apt-get install -y curl software-properties-common apt-transport-https && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
+    add-apt-repository -y ppa:beineri/opt-qt-${QTVER}-bionic && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y full-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     build-essential \
@@ -60,8 +61,12 @@ RUN \
 	cmake --version
 	
 RUN 	apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
-	
+
+RUN mkdir -p /yuzu
+RUN chown yuzu /yuzu	
 USER 1027
+WORKDIR /yuzu
+
 RUN conan install catch2/2.11.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install fmt/6.2.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install nlohmann_json/3.7.3@ -s compiler.libcxx=libstdc++11 --build=missing 
