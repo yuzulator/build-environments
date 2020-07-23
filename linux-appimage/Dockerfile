@@ -59,9 +59,10 @@ RUN \
 	rm ./cmake*.sh && \
 	cmake --version
 	
+RUN 	apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
+	
 USER 1027
 RUN conan install catch2/2.11.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install fmt/6.2.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install nlohmann_json/3.7.3@ -s compiler.libcxx=libstdc++11 --build=missing && \
-    apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 
