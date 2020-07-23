@@ -20,6 +20,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y full-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     build-essential \
+    dpkg \
     $GCC_BINARY $GXX_BINARY \
     libboost-all-dev \
     liblz4-dev \
