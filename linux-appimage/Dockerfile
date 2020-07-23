@@ -28,6 +28,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libsdl2-dev \
     libssl-dev \
     libopus-dev \
+    libpthread-stubs0-dev \
     libzip-dev \
     libzstd-dev \
     zlib1g-dev \
