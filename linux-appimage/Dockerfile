@@ -32,6 +32,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libzip-dev \
     libzstd-dev \
     zlib1g-dev \
+    pulseaudio \
     python \
     python-pip \
     python-setuptools \
@@ -40,6 +41,14 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     qttools5-dev \
     qtwebengine5-dev \
     libqt5opengl5-dev \
+    libxi-dev \
+    libavcodec-dev \
+    libudev-dev \
+    libevdev-dev \
+    libc6-dev \
+    libavformat-dev \
+    libavdevice-dev \
+    libfmt-dev \
     wget \
     curl \
     git \
