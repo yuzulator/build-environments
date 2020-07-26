@@ -25,6 +25,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     $GCC_BINARY $GXX_BINARY \
     libboost-all-dev \
     liblz4-dev \
+    liblzma-dev \
     libsdl2-dev \
     libssl-dev \
     libopus-dev \
@@ -38,6 +39,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     python-setuptools \
     qtbase5-dev \
     qtbase5-private-dev \
+    qtdeclarative5-dev \
     qttools5-dev \
     qtwebengine5-dev \
     libqt5opengl5-dev \
@@ -49,6 +51,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libavformat-dev \
     libavdevice-dev \
     libfmt-dev \
+    x11-utils \
     wget \
     curl \
     git \
@@ -60,6 +63,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
 RUN \
 	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCCVER} 10 && \
 	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCCVER} 10 && \
+	source /opt/qt514/bin/qt514-env.sh && \
 	gcc --version && \
 	g++ --version 
     
@@ -80,7 +84,7 @@ RUN \
 	make && make install && \
 	rm ../../libzip-${LIBZIPVER}.tar.gz 
 	
-RUN 	apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
+RUN 	apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/cache /var/lib/log
 
 RUN mkdir -p /yuzu
 RUN chown yuzu /yuzu	
