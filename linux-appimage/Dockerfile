@@ -63,7 +63,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
 RUN \
 	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCCVER} 10 && \
 	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCCVER} 10 && \
-	source /opt/qt514/bin/qt514-env.sh && \
+	. /opt/qt514/bin/qt514-env.sh && \
 	gcc --version && \
 	g++ --version 
     
