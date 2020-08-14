@@ -50,6 +50,6 @@ RUN pip3 install conan
 COPY --chown=yuzu:yuzu default /home/yuzu/.conan/profiles/
 USER 1027
 # Install/build the missing libs (uses the default mingw cross compile profile)
-RUN conan install catch2/2.11.0@ --build=missing && \
-    conan install fmt/6.2.0@ --build=missing && \
-    conan install nlohmann_json/3.7.3@ --build=missing
+RUN conan install catch2/2.13.0@ --build=missing && \
+    conan install fmt/7.0.3@ --build=missing && \
+    conan install nlohmann_json/3.9.1@ --build=missing
