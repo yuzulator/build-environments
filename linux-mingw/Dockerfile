@@ -22,6 +22,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     cmake \
     ninja \
     mingw-w64-boost \
+    mingw-w64-ffmpeg \
     mingw-w64-gcc \
     mingw-w64-lz4 \
     mingw-w64-opus \
@@ -40,16 +41,16 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     rm -rf /usr/share/man/ /tmp/ /var/tmp/
 
 # Setup extra mingw work arounds
-COPY mingw-setup.sh /tmp/
-RUN cd /tmp/ && bash -e mingw-setup.sh
+RUN pip3 install pefile
 # Compatibility with the old Ubuntu MingW image
 RUN ln -s /usr/x86_64-w64-mingw32/lib/qt /usr/x86_64-w64-mingw32/lib/qt5
 
 # Install conan and add the mingw cross compile as the default profile
 RUN pip3 install conan
 COPY --chown=yuzu:yuzu default /home/yuzu/.conan/profiles/
+COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
 USER 1027
 # Install/build the missing libs (uses the default mingw cross compile profile)
-RUN conan install catch2/2.11.0@ --build=missing && \
-    conan install fmt/6.2.0@ --build=missing && \
-    conan install nlohmann_json/3.7.3@ --build=missing
+RUN conan install catch2/2.13.1@ --build=missing && \
+    conan install fmt/7.0.3@ --build=missing && \
+    conan install nlohmann_json/3.9.1@ --build=missing

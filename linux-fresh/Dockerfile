@@ -24,10 +24,13 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     git \
     ccache \
     cmake \
+    libavcodec-dev \
+    libavutil-dev \
+    libswscale-dev \
     ninja-build && \
     pip3 install conan && \
     apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 USER 1027
-RUN conan install catch2/2.11.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
-    conan install fmt/6.2.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
-    conan install nlohmann_json/3.7.3@ -s compiler.libcxx=libstdc++11 --build=missing
+RUN conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
+    conan install fmt/7.0.3@ -s compiler.libcxx=libstdc++11 --build=missing && \
+    conan install nlohmann_json/3.9.1@ -s compiler.libcxx=libstdc++11 --build=missing
