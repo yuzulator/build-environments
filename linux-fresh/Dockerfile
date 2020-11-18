@@ -5,11 +5,17 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y full-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     build-essential \
+    gcc-10 \
+    g++-10 \
+    libavcodec-dev \
+    libavutil-dev \
+    libswscale-dev \
     libboost-all-dev \
     liblz4-dev \
+    libmbedtls-dev \
+    libopus-dev \
     libsdl2-dev \
     libssl-dev \
-    libopus-dev \
     libzip-dev \
     libzstd-dev \
     zlib1g-dev \
@@ -24,13 +30,14 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     git \
     ccache \
     cmake \
-    libavcodec-dev \
-    libavutil-dev \
-    libswscale-dev \
     ninja-build && \
-    pip3 install conan && \
-    apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
+    pip3 install conan
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+RUN apt-get clean autoclean && \
+    apt-get autoremove --yes && \
+    rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 USER 1027
 RUN conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
-    conan install fmt/7.0.3@ -s compiler.libcxx=libstdc++11 --build=missing && \
+    conan install fmt/7.1.2@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install nlohmann_json/3.9.1@ -s compiler.libcxx=libstdc++11 --build=missing
