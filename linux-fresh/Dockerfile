@@ -26,7 +26,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     qttools5-dev \
     qtwebengine5-dev \
     libqt5opengl5-dev \
-    rapidjson-dev \
     wget \
     git \
     ccache \
