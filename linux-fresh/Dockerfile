@@ -7,12 +7,12 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     build-essential \
     gcc-10 \
     g++-10 \
+    glslang-tools \
     libavcodec-dev \
     libavutil-dev \
     libswscale-dev \
     libboost-all-dev \
     liblz4-dev \
-    libmbedtls-dev \
     libopus-dev \
     libsdl2-dev \
     libssl-dev \
