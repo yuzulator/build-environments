@@ -14,6 +14,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     gnupg \
     wget \
     git \
+    glslang \
     python-pip \
     python \
     python2 \
