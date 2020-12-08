@@ -11,7 +11,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libavcodec-dev \
     libavutil-dev \
     libswscale-dev \
-    libboost-all-dev \
     liblz4-dev \
     libopus-dev \
     libsdl2-dev \
@@ -38,6 +37,7 @@ RUN apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 USER 1027
-RUN conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
+RUN conan install boost/1.73.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
+    conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install fmt/7.1.2@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install nlohmann_json/3.9.1@ -s compiler.libcxx=libstdc++11 --build=missing
