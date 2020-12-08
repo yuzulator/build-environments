@@ -5,6 +5,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y full-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     build-essential \
+    file \
     gcc-10 \
     g++-10 \
     glslang-tools \
