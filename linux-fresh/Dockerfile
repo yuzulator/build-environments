@@ -26,7 +26,8 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     software-properties-common \
     unzip \
     wget \
-    zlib1g-dev && \
+    zlib1g-dev \
+    zsync && \
     pip3 install conan
 # Install updated versions of FFmpeg, GCC, Qt, and SDL2 from launchpad repositories
 RUN add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
