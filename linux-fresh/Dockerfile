@@ -20,6 +20,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libssl-dev \
     libzip-dev \
     libzstd-dev \
+    nasm \
     ninja-build \
     python3-pip \
     python3-setuptools \
