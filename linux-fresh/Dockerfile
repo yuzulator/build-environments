@@ -1,7 +1,9 @@
 FROM ubuntu:18.04
 MAINTAINER yuzu
 
+ENV CLANG_VER=12
 ENV CMAKE_VER=3.16.3
+ENV DEBIAN_FRONTEND=noninteractive
 ENV GCC_VER=10
 ENV QT_PKG_VER=512
 ENV QT_VER=5.12.6
@@ -9,12 +11,13 @@ ENV UBUNTU_VER=bionic
 
 # Create a user account yuzu (UID 1027) that the container will run as
 RUN useradd -m -u 1027 -s /bin/bash yuzu && \
-    DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y full-upgrade && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    apt-get update && apt-get -y full-upgrade && \
+    apt-get install --no-install-recommends -y \
     build-essential \
     ccache \
     file \
     git \
+    gpg-agent \
     liblz4-dev \
     libopus-dev \
     libssl-dev \
@@ -36,7 +39,7 @@ RUN add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     add-apt-repository -y ppa:jonathonf/ffmpeg-4 && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     apt-get update -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    apt-get install --no-install-recommends -y \
     g++-${GCC_VER} \
     gcc-${GCC_VER} \
     libavcodec-dev \
@@ -47,8 +50,17 @@ RUN add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     qt${QT_PKG_VER}tools \
     qt${QT_PKG_VER}webengine && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VER} ${GCC_VER} && \
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VER} ${GCC_VER} && \
-    apt-get clean autoclean && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VER} ${GCC_VER}
+# Install clang from apt.llvm.org
+RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    echo "deb http://apt.llvm.org/${UBUNTU_VER}/ llvm-toolchain-${UBUNTU_VER}-${CLANG_VER} main" >> /etc/apt/sources.list && \
+    apt-get update -y && \
+    apt-get install --no-install-recommends -y \
+    clang-${CLANG_VER} && \
+    ln -s $(which clang-${CLANG_VER}) /usr/bin/clang && \
+    ln -s $(which clang++-${CLANG_VER}) /usr/bin/clang++ && \
+    dpkg-reconfigure ccache
+RUN apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 # Install glslangValidator from upstream
@@ -68,6 +80,7 @@ RUN cd /tmp && \
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
 USER 1027
+COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
 RUN conan install boost/1.73.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install fmt/7.1.2@ -s compiler.libcxx=libstdc++11 --build=missing && \
