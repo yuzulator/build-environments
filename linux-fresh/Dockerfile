@@ -48,6 +48,7 @@ RUN add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     libswscale-dev \
     qt${QT_PKG_VER}base \
     qt${QT_PKG_VER}tools \
+    qt${QT_PKG_VER}wayland \
     qt${QT_PKG_VER}webengine && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VER} ${GCC_VER} && \
     update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VER} ${GCC_VER}
