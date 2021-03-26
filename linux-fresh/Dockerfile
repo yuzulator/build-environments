@@ -77,12 +77,18 @@ RUN cd /tmp && \
     tar xvf cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
     cp -rv cmake-${CMAKE_VER}-Linux-x86_64/* /usr && \
     rm -rf cmake-*
+# Install Boost 1.75.0 from yuzu-emu/ext-linux-bin
+RUN cd /tmp && \
+    wget https://github.com/yuzu-emu/ext-linux-bin/raw/main/boost/boost_1_75_0.tar.xz &&\
+    tar xvf boost_1_75_0.tar.xz && \
+    chown -R root:root boost_1_75_0/ && \
+    cp -rv boost_1_75_0/include boost_1_75_0/lib /usr && \
+    rm -rf boost*
 # Setup paths for Qt binaries
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
 USER 1027
 COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
-RUN conan install boost/1.73.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
-    conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
+RUN conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install fmt/7.1.2@ -s compiler.libcxx=libstdc++11 --build=missing && \
     conan install nlohmann_json/3.9.1@ -s compiler.libcxx=libstdc++11 --build=missing
