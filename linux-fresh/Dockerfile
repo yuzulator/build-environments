@@ -89,6 +89,3 @@ ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
 USER 1027
 COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
-RUN conan install catch2/2.13.0@ -s compiler.libcxx=libstdc++11 --build=missing && \
-    conan install fmt/7.1.2@ -s compiler.libcxx=libstdc++11 --build=missing && \
-    conan install nlohmann_json/3.9.1@ -s compiler.libcxx=libstdc++11 --build=missing
