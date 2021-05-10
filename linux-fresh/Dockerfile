@@ -13,6 +13,8 @@ ENV UBUNTU_VER=bionic
 RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     apt-get update && apt-get -y full-upgrade && \
     apt-get install --no-install-recommends -y \
+    autoconf \
+    automake \
     build-essential \
     ccache \
     file \
@@ -21,6 +23,8 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     liblz4-dev \
     libopus-dev \
     libssl-dev \
+    libtool \
+    libusb-1.0-0-dev \
     libzip-dev \
     libzstd-dev \
     nasm \
@@ -84,6 +88,13 @@ RUN cd /tmp && \
     chown -R root:root boost_1_75_0/ && \
     cp -rv boost_1_75_0/include boost_1_75_0/lib /usr && \
     rm -rf boost*
+# Install hidapi 0.10.1 from yuzu-emu/ext-linux-bin
+RUN cd /tmp && \
+    wget https://github.com/yuzu-emu/ext-linux-bin/raw/main/hidapi/hidapi_0_10_1.tar.xz &&\
+    tar xvf hidapi_0_10_1.tar.xz && \
+    chown -R root:root hidapi/ && \
+    cp -rv hidapi/include hidapi/lib hidapi/share /usr && \
+    rm -rf hidapi*
 # Setup paths for Qt binaries
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
