@@ -17,13 +17,11 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     glslang \
     python-pip \
     python \
-    python2 \
     ccache \
     p7zip \
     cmake \
     ninja \
     mingw-w64-boost \
-    mingw-w64-ffmpeg \
     mingw-w64-gcc \
     mingw-w64-lz4 \
     mingw-w64-opus \
@@ -39,7 +37,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     mingw-w64-zstd \
     && \
     pacman -Scc --noconfirm && \
-    rm -rf /usr/share/man/ /tmp/* /var/tmp/
+    rm -rf /usr/share/man/ /tmp/* /var/tmp/ /usr/{i686-w64-mingw32,lib32} /usr/lib/gcc/i686-w64-mingw32
 
 # Setup extra mingw work arounds
 RUN pip3 install pefile
