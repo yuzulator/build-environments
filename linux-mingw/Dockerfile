@@ -39,7 +39,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     mingw-w64-zstd \
     && \
     pacman -Scc --noconfirm && \
-    rm -rf /usr/share/man/ /tmp/ /var/tmp/
+    rm -rf /usr/share/man/ /tmp/* /var/tmp/
 
 # Setup extra mingw work arounds
 RUN pip3 install pefile
@@ -51,7 +51,3 @@ RUN pip3 install conan
 COPY --chown=yuzu:yuzu default /home/yuzu/.conan/profiles/
 COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
 USER 1027
-# Install/build the missing libs (uses the default mingw cross compile profile)
-RUN conan install catch2/2.13.1@ --build=missing && \
-    conan install fmt/7.0.3@ --build=missing && \
-    conan install nlohmann_json/3.9.1@ --build=missing
