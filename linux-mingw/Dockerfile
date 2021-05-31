@@ -1,5 +1,10 @@
 FROM archlinux:latest
 MAINTAINER yuzu
+# Workaround for Arch Linux Docker image failing to build
+# From https://stackoverflow.com/questions/66154574
+RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
+    curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
+    bsdtar -C / -xvf "$patched_glibc"
 # Add mingw-repo "ownstuff" is a AUR with an up to date mingw64
 # Runs pacman -Syu twice in order to work around pacman issues where the first run only updates the current distro packages
 # and the second run actually pulls the updates from the repos.
@@ -17,13 +22,11 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     glslang \
     python-pip \
     python \
-    python2 \
     ccache \
     p7zip \
     cmake \
     ninja \
     mingw-w64-boost \
-    mingw-w64-ffmpeg \
     mingw-w64-gcc \
     mingw-w64-lz4 \
     mingw-w64-opus \
@@ -39,7 +42,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     mingw-w64-zstd \
     && \
     pacman -Scc --noconfirm && \
-    rm -rf /usr/share/man/ /tmp/* /var/tmp/
+    rm -rf /usr/share/man/ /tmp/* /var/tmp/ /usr/{i686-w64-mingw32,lib32} /usr/lib/gcc/i686-w64-mingw32
 
 # Setup extra mingw work arounds
 RUN pip3 install pefile
