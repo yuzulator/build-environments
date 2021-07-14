@@ -1,12 +1,12 @@
 FROM ubuntu:18.04
-MAINTAINER yuzu
+LABEL maintainer="yuzu"
 
 ENV CLANG_VER=12
 ENV CMAKE_VER=3.16.3
 ENV DEBIAN_FRONTEND=noninteractive
 ENV GCC_VER=10
-ENV QT_PKG_VER=512
-ENV QT_VER=5.12.6
+ENV QT_PKG_VER=515
+ENV QT_VER=5.15.2
 ENV UBUNTU_VER=bionic
 
 # Create a user account yuzu (UID 1027) that the container will run as
