@@ -1,8 +1,7 @@
 FROM archlinux:latest
-MAINTAINER yuzu
+LABEL maintainer="yuzu"
 
 ENV EXT_BIN_URL="https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw"
-
 # Workaround for Arch Linux Docker image failing to build
 # From https://stackoverflow.com/questions/66154574
 RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \

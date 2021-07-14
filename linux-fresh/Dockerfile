@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-MAINTAINER yuzu
+LABEL maintainer="yuzu"
 
 ENV CLANG_VER=12
 ENV CMAKE_VER=3.16.3
