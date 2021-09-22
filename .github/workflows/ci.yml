@@ -27,4 +27,4 @@ jobs:
       with:
         push: ${{ (github.ref == 'refs/heads/master') && (github.repository == 'yuzu-emu/build-environments') }}
         context: ${{ matrix.image }}
-        tags: citraemu/build-environments:${{ matrix.image }}
+        tags: yuzuemu/build-environments:${{ matrix.image }}
