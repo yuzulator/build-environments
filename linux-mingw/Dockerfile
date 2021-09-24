@@ -4,7 +4,8 @@ MAINTAINER yuzu
 # From https://stackoverflow.com/questions/66154574
 RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
     curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
-    bsdtar -C / -xvf "$patched_glibc"
+    bsdtar -C / -xvf "$patched_glibc" && \
+    echo 'IgnorePkg = glibc' >> /etc/pacman.conf
 # Add mingw-repo "ownstuff" is a AUR with an up to date mingw64
 # Runs pacman -Syu twice in order to work around pacman issues where the first run only updates the current distro packages
 # and the second run actually pulls the updates from the repos.
@@ -30,17 +31,21 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     mingw-w64-gcc \
     mingw-w64-lz4 \
     mingw-w64-opus \
-    mingw-w64-qt5-base \
-    mingw-w64-qt5-tools \
-    mingw-w64-qt5-graphicaleffects \
-    mingw-w64-qt5-multimedia \
-    mingw-w64-qt5-winextras \
     mingw-w64-sdl2 \
     mingw-w64-tools \
     mingw-w64-winpthreads \
     mingw-w64-zlib \
-    mingw-w64-zstd \
     && \
+    cd /tmp && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-fmt-8.0.0-5-any.pkg.tar.zst && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-qt5-base-5.15.2-1-x86_64.pkg.tar.zst && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-qt5-declarative-5.15.2-1-x86_64.pkg.tar.zst && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-qt5-graphicaleffects-5.15.2-1-any.pkg.tar.zst && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-qt5-multimedia-5.15.2-1-any.pkg.tar.zst && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-qt5-tools-5.15.2-1-x86_64.pkg.tar.zst && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-qt5-winextras-5.15.2-1-any.pkg.tar.zst && \
+    wget -q https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-zstd-1.5.0-1-any.pkg.tar.zst && \
+    pacman -U --noconfirm --noprogressbar mingw-w64-{fmt-8.0.0-5-any,qt5-base-5.15.2-1-x86_64,qt5-declarative-5.15.2-1-x86_64,qt5-graphicaleffects-5.15.2-1-any,qt5-multimedia-5.15.2-1-any,qt5-tools-5.15.2-1-x86_64,qt5-winextras-5.15.2-1-any,zstd-1.5.0-1-any}.pkg.tar.zst && \
     pacman -Scc --noconfirm && \
     rm -rf /usr/share/man/ /tmp/* /var/tmp/ /usr/{i686-w64-mingw32,lib32} /usr/lib/gcc/i686-w64-mingw32
 
