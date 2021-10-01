@@ -5,8 +5,8 @@ ENV CLANG_VER=12
 ENV CMAKE_VER=3.16.3
 ENV DEBIAN_FRONTEND=noninteractive
 ENV GCC_VER=10
-ENV QT_PKG_VER=512
-ENV QT_VER=5.12.6
+ENV QT_PKG_VER=515
+ENV QT_VER=5.15.2
 ENV UBUNTU_VER=bionic
 
 # Create a user account yuzu (UID 1027) that the container will run as
@@ -36,9 +36,9 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     wget \
     zlib1g-dev \
     zsync && \
-    pip3 install conan
+    pip3 install conan && \
 # Install updated versions of FFmpeg, GCC, Qt, and SDL2 from launchpad repositories
-RUN add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
+    add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     add-apt-repository -y ppa:cybermax-dexter/sdl2-backport && \
     add-apt-repository -y ppa:jonathonf/ffmpeg-4 && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
@@ -55,17 +55,17 @@ RUN add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     qt${QT_PKG_VER}wayland \
     qt${QT_PKG_VER}webengine && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VER} ${GCC_VER} && \
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VER} ${GCC_VER}
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VER} ${GCC_VER} && \
 # Install clang from apt.llvm.org
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     echo "deb http://apt.llvm.org/${UBUNTU_VER}/ llvm-toolchain-${UBUNTU_VER}-${CLANG_VER} main" >> /etc/apt/sources.list && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
     clang-${CLANG_VER} && \
     ln -s $(which clang-${CLANG_VER}) /usr/bin/clang && \
     ln -s $(which clang++-${CLANG_VER}) /usr/bin/clang++ && \
-    dpkg-reconfigure ccache
-RUN apt-get clean autoclean && \
+    dpkg-reconfigure ccache && \
+    apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 # Install glslangValidator from upstream
