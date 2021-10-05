@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 MAINTAINER yuzu
 
 ENV CLANG_VER=12
-ENV CMAKE_VER=3.16.3
+ENV CMAKE_VER=3.18.6
 ENV DEBIAN_FRONTEND=noninteractive
 ENV GCC_VER=10
 ENV QT_PKG_VER=515
@@ -75,7 +75,7 @@ RUN cd /tmp && \
     unzip glslang-master-linux-Release.zip -d /usr && \
     rm -v glslang-master-linux-Release.zip
 # Install CMake from upstream
-# yuzu requires CMake version 3.15, however Ubuntu only provides 3.10 to Bionic.
+# yuzu requires CMake version 3.18, however Ubuntu only provides 3.10 to Bionic.
 RUN cd /tmp && \
     wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
     tar xvf cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
