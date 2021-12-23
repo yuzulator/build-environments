@@ -18,7 +18,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     build-essential \
     ccache \
     file \
-    git \
     gpg-agent \
     liblz4-dev \
     libopus-dev \
@@ -42,10 +41,12 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     add-apt-repository -y ppa:cybermax-dexter/sdl2-backport && \
     add-apt-repository -y ppa:jonathonf/ffmpeg-4 && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
+    add-apt-repository -y ppa:git-core/ppa && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
     g++-${GCC_VER} \
     gcc-${GCC_VER} \
+    git \
     libavcodec-dev \
     libavutil-dev \
     libsdl2-dev \
