@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ["linux-clang-format", "linux-flatpak", "linux-fresh", "linux-mingw", "linux-transifex"]
+        image: ["linux-clang-format", "linux-fresh", "linux-mingw", "linux-transifex"]
     
     steps:
     - uses: actions/checkout@v2
