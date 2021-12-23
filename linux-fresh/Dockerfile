@@ -38,8 +38,8 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     pip3 install conan && \
 # Install updated versions of FFmpeg, GCC, Qt, and SDL2 from launchpad repositories
     add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
-    add-apt-repository -y ppa:cybermax-dexter/sdl2-backport && \
-    add-apt-repository -y ppa:jonathonf/ffmpeg-4 && \
+    add-apt-repository -y ppa:savoury1/ffmpeg4 && \
+    add-apt-repository -y ppa:savoury1/multimedia && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     add-apt-repository -y ppa:git-core/ppa && \
     apt-get update -y && \
@@ -51,6 +51,9 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libavutil-dev \
     libsdl2-dev \
     libswscale-dev \
+    glslang-tools \
+    glslang-dev \
+    libhidapi-dev \
     qt${QT_PKG_VER}base \
     qt${QT_PKG_VER}tools \
     qt${QT_PKG_VER}wayland \
@@ -69,12 +72,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
-# Install glslangValidator from upstream
-# glslangValidator is not available from Ubuntu's Bionic repositories.
-RUN cd /tmp && \
-    wget https://github.com/KhronosGroup/glslang/releases/download/master-tot/glslang-master-linux-Release.zip && \
-    unzip glslang-master-linux-Release.zip -d /usr && \
-    rm -v glslang-master-linux-Release.zip
 # Install CMake from upstream
 # yuzu requires CMake version 3.15, however Ubuntu only provides 3.10 to Bionic.
 RUN cd /tmp && \
@@ -89,13 +86,6 @@ RUN cd /tmp && \
     chown -R root:root boost_1_75_0/ && \
     cp -rv boost_1_75_0/include boost_1_75_0/lib /usr && \
     rm -rf boost*
-# Install hidapi 0.10.1 from yuzu-emu/ext-linux-bin
-RUN cd /tmp && \
-    wget https://github.com/yuzu-emu/ext-linux-bin/raw/main/hidapi/hidapi_0_10_1.tar.xz &&\
-    tar xvf hidapi_0_10_1.tar.xz && \
-    chown -R root:root hidapi/ && \
-    cp -rv hidapi/include hidapi/lib hidapi/share /usr && \
-    rm -rf hidapi*
 # Setup paths for Qt binaries
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
