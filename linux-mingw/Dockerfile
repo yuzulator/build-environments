@@ -2,12 +2,7 @@ FROM archlinux:latest
 LABEL maintainer="yuzu"
 
 ENV EXT_BIN_URL="https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw"
-# Workaround for Arch Linux Docker image failing to build
-# From https://stackoverflow.com/questions/66154574
-RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
-    curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
-    bsdtar -C / -xvf "$patched_glibc" && \
-    echo 'IgnorePkg = glibc' >> /etc/pacman.conf
+
 # Add mingw-repo "ownstuff" is a AUR with an up to date mingw64
 # Runs pacman -Syu twice in order to work around pacman issues where the first run only updates the
 # current distro packages, and the second run actually pulls the updates from the repos.
