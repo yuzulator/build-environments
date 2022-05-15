@@ -13,12 +13,15 @@ ENV UBUNTU_VER=bionic
 RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     apt-get update && apt-get -y full-upgrade && \
     apt-get install --no-install-recommends -y \
+    appstream \
     autoconf \
     automake \
     build-essential \
     ccache \
+    desktop-file-utils \
     file \
     gpg-agent \
+    libfile-mimeinfo-perl \
     liblz4-dev \
     libopus-dev \
     libssl-dev \
