@@ -1,10 +1,10 @@
 FROM ubuntu:18.04
 LABEL maintainer="yuzu"
 
-ENV CLANG_VER=12
-ENV CMAKE_VER=3.16.3
+ENV CLANG_VER=14
+ENV CMAKE_VER=3.16.9
 ENV DEBIAN_FRONTEND=noninteractive
-ENV GCC_VER=10
+ENV GCC_VER=11
 ENV QT_PKG_VER=515
 ENV QT_VER=5.15.2
 ENV UBUNTU_VER=bionic
@@ -69,6 +69,8 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
     clang-${CLANG_VER} && \
+    lld-${CLANG_VER} && \
+    llvm-${CLANG_VER}-linker-tools && \
     ln -s $(which clang-${CLANG_VER}) /usr/bin/clang && \
     ln -s $(which clang++-${CLANG_VER}) /usr/bin/clang++ && \
     dpkg-reconfigure ccache && \
