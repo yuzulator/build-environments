@@ -22,13 +22,9 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     file \
     gpg-agent \
     libfile-mimeinfo-perl \
-    liblz4-dev \
-    libopus-dev \
     libssl-dev \
     libtool \
-    libusb-1.0-0-dev \
     libzip-dev \
-    libzstd-dev \
     nasm \
     ninja-build \
     python3-pip \
@@ -52,7 +48,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     git \
     libavcodec-dev \
     libavutil-dev \
-    libsdl2-dev \
     libswscale-dev \
     glslang-tools \
     glslang-dev \
