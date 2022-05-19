@@ -24,6 +24,9 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     libfile-mimeinfo-perl \
     libssl-dev \
     libtool \
+    libudev-dev \
+    libva-dev \
+    libwayland-dev \
     libzip-dev \
     nasm \
     ninja-build \
