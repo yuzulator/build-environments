@@ -40,8 +40,9 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     pip3 install conan && \
 # Install updated versions of FFmpeg, GCC, Qt, and SDL2 from launchpad repositories
     add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
-    add-apt-repository -y ppa:savoury1/ffmpeg4 && \
+    add-apt-repository -y ppa:savoury1/graphics && \
     add-apt-repository -y ppa:savoury1/multimedia && \
+    add-apt-repository -y ppa:savoury1/ffmpeg4 && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     add-apt-repository -y ppa:git-core/ppa && \
     apt-get update -y && \
@@ -49,11 +50,8 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     g++-${GCC_VER} \
     gcc-${GCC_VER} \
     git \
-    libavcodec-dev \
-    libavutil-dev \
-    libswscale-dev \
-    glslang-tools \
     glslang-dev \
+    glslang-tools \
     libhidapi-dev \
     qt${QT_PKG_VER}base \
     qt${QT_PKG_VER}tools \
