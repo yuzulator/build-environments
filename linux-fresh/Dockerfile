@@ -22,14 +22,18 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     file \
     gpg-agent \
     libfile-mimeinfo-perl \
+    libglu1-mesa-dev \
+    libpulse-dev \
     libssl-dev \
     libtool \
     libudev-dev \
     libva-dev \
     libwayland-dev \
     libzip-dev \
+    mesa-common-dev \
     nasm \
     ninja-build \
+    pkg-config \
     python3-pip \
     python3-setuptools \
     software-properties-common \
@@ -64,8 +68,9 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     echo "deb http://apt.llvm.org/${UBUNTU_VER}/ llvm-toolchain-${UBUNTU_VER}-${CLANG_VER} main" >> /etc/apt/sources.list && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
-    clang-${CLANG_VER} && \
-    lld-${CLANG_VER} && \
+    clang-${CLANG_VER} \
+    lld-${CLANG_VER} \
+    llvm-${CLANG_VER} \
     llvm-${CLANG_VER}-linker-tools && \
     ln -s $(which clang-${CLANG_VER}) /usr/bin/clang && \
     ln -s $(which clang++-${CLANG_VER}) /usr/bin/clang++ && \
@@ -73,6 +78,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
+
 # Install CMake from upstream
 # yuzu requires CMake version 3.15, however Ubuntu only provides 3.10 to Bionic.
 RUN cd /tmp && \
@@ -80,6 +86,7 @@ RUN cd /tmp && \
     tar xvf cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
     cp -rv cmake-${CMAKE_VER}-Linux-x86_64/* /usr && \
     rm -rf cmake-*
+
 # Install Boost 1.75.0 from yuzu-emu/ext-linux-bin
 RUN cd /tmp && \
     wget https://github.com/yuzu-emu/ext-linux-bin/raw/main/boost/boost_1_75_0.tar.xz &&\
@@ -87,8 +94,15 @@ RUN cd /tmp && \
     chown -R root:root boost_1_75_0/ && \
     cp -rv boost_1_75_0/include boost_1_75_0/lib /usr && \
     rm -rf boost*
+    
 # Setup paths for Qt binaries
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
+
+# Fix GCC 11 <-> Qt 5.15 issue
+COPY qtconcurrentthreadengine.patch /opt/qt515/qtconcurrentthreadengine.patch
+RUN patch /opt/qt515/include/QtConcurrent/qtconcurrentthreadengine.h /opt/qt515/qtconcurrentthreadengine.patch && \
+    rm /opt/qt515/qtconcurrentthreadengine.patch
+
 USER 1027
 COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
