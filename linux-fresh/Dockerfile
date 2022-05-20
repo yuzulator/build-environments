@@ -82,19 +82,19 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
 # Install CMake from upstream
 # yuzu requires CMake version 3.15, however Ubuntu only provides 3.10 to Bionic.
 RUN cd /tmp && \
-    wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
+    wget --no-verbose https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
     tar xvf cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
     cp -rv cmake-${CMAKE_VER}-Linux-x86_64/* /usr && \
     rm -rf cmake-*
 
-# Install Boost 1.75.0 from yuzu-emu/ext-linux-bin
+# Install Boost 1.79.0 from yuzu-emu/ext-linux-bin
 RUN cd /tmp && \
-    wget https://github.com/yuzu-emu/ext-linux-bin/raw/main/boost/boost_1_75_0.tar.xz &&\
-    tar xvf boost_1_75_0.tar.xz && \
-    chown -R root:root boost_1_75_0/ && \
-    cp -rv boost_1_75_0/include boost_1_75_0/lib /usr && \
+    wget --no-verbose https://github.com/yuzu-emu/ext-linux-bin/raw/main/boost/boost-1_79_0.tar.xz && \
+    tar xvf boost-1_79_0.tar.xz && \
+    chown -R root:root boost-1_79_0/ && \
+    cp -rv boost-1_79_0/usr / && \
     rm -rf boost*
-    
+
 # Setup paths for Qt binaries
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
