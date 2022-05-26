@@ -4,7 +4,7 @@ LABEL maintainer="yuzu"
 ENV CLANG_VER=14
 ENV CMAKE_VER=3.16.9
 ENV DEBIAN_FRONTEND=noninteractive
-ENV GCC_VER=11
+ENV GCC_VER=11.3.0
 ENV QT_PKG_VER=515
 ENV QT_VER=5.15.2
 ENV UBUNTU_VER=bionic
@@ -42,7 +42,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     zlib1g-dev \
     zsync && \
     pip3 install conan && \
-# Install updated versions of FFmpeg, GCC, Qt, and SDL2 from launchpad repositories
+# Install updated versions of glslang, git, and Qt from launchpad repositories
     add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     add-apt-repository -y ppa:savoury1/graphics && \
     add-apt-repository -y ppa:savoury1/multimedia && \
@@ -51,8 +51,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     add-apt-repository -y ppa:git-core/ppa && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
-    g++-${GCC_VER} \
-    gcc-${GCC_VER} \
     git \
     glslang-dev \
     glslang-tools \
@@ -61,8 +59,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     qt${QT_PKG_VER}tools \
     qt${QT_PKG_VER}wayland \
     qt${QT_PKG_VER}webengine && \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VER} ${GCC_VER} && \
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VER} ${GCC_VER} && \
 # Install clang from apt.llvm.org
     wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     echo "deb http://apt.llvm.org/${UBUNTU_VER}/ llvm-toolchain-${UBUNTU_VER}-${CLANG_VER} main" >> /etc/apt/sources.list && \
@@ -94,6 +90,24 @@ RUN cd /tmp && \
     chown -R root:root boost-1_79_0/ && \
     cp -rv boost-1_79_0/usr / && \
     rm -rf boost*
+
+# Install GCC from yuzu-emu/ext-linux-bin
+RUN cd /tmp && \
+    wget --no-verbose \
+        https://github.com/yuzu-emu/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.aa \
+        https://github.com/yuzu-emu/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ab \
+        https://github.com/yuzu-emu/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ac && \
+    cat gcc-${GCC_VER}-ubuntu.tar.xz.* | tar xJ && \
+    cp -rv gcc-${GCC_VER}/usr / && \
+    rm -rf /tmp/gcc* && \
+# Use updated libstdc++ and libgcc_s on the container from GCC 11
+    rm -v /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /lib/x86_64-linux-gnu/libgcc_s.so.1 && \
+    ln -sv /usr/local/lib64/libstdc++.so.6.0.29 /usr/lib/x86_64-linux-gnu/libstdc++.so.6 && \
+    ln -sv /usr/local/lib64/libgcc_s.so.1 /lib/x86_64-linux-gnu/libgcc_s.so.1 && \
+# Help Clang find the updated GCC C++ version
+    ln -sv /usr/local/include/c++/${GCC_VER}/ /usr/include/c++/${GCC_VER} && \
+    ln -sv /usr/local/lib/gcc/x86_64-pc-linux-gnu/${GCC_VER} /usr/lib/gcc/x86_64-linux-gnu/${GCC_VER} && \
+    cp -rv /usr/local/include/c++/${GCC_VER}/x86_64-pc-linux-gnu/* /usr/local/include/c++/${GCC_VER}/
 
 # Setup paths for Qt binaries
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
