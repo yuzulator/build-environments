@@ -65,8 +65,8 @@ USER 1027
 RUN \
 # mingw-w64-clang -- MinGW wrapper for host clang
     cd && \
-    git clone https://aur.archlinux.org/mingw-w64-clang-git.git && \
-    cd mingw-w64-clang-git && \
+    git clone https://aur.archlinux.org/mingw-w64-wclang-git.git && \
+    cd mingw-w64-wclang-git && \
     makepkg -si --noconfirm --noprogressbar && \
 # mingw-w64-fmt
     cd && \
