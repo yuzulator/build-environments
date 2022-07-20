@@ -4,6 +4,7 @@ LABEL maintainer="yuzu"
 ENV CLANG_VER=14
 ENV CMAKE_VER=3.16.9
 ENV DEBIAN_FRONTEND=noninteractive
+ENV FMT_VER=8.1.1
 ENV GCC_VER=11.3.0
 ENV QT_PKG_VER=515
 ENV QT_VER=5.15.2
@@ -115,6 +116,13 @@ RUN cd /tmp && \
     ln -sv /usr/local/lib/gcc/x86_64-pc-linux-gnu/${GCC_VER} /usr/lib/gcc/x86_64-linux-gnu/${GCC_VER} && \
     cp -rv /usr/local/include/c++/${GCC_VER}/x86_64-pc-linux-gnu/* /usr/local/include/c++/${GCC_VER}/
 
+# Build and install {fmt}
+RUN cd /tmp && \
+    git clone --depth 1 --branch ${FMT_VER} https://github.com/fmtlib/fmt.git && \
+    cmake -G Ninja -B build -S fmt -DFMT_DOC=OFF -DFMT_TEST=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=/usr -Wno-dev && \
+    ninja -C build install && \
+    rm -rf fmt build
+
 # Setup paths for Qt binaries
 ENV LD_LIBRARY_PATH=/opt/qt${QT_PKG_VER}/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/qt${QT_PKG_VER}/bin:${PATH}
@@ -149,7 +157,6 @@ RUN cd /home/yuzu &&\
     cd vcpkg &&\
     ./bootstrap-vcpkg.sh &&\
     ./vcpkg install \
-        fmt \
         lz4 \
         nlohmann-json \
         zlib \
