@@ -30,6 +30,7 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     mingw-w64-gcc \
     mingw-w64-libusb \
     mingw-w64-lz4 \
+    mingw-w64-nlohmann-json \
     mingw-w64-opus \
     mingw-w64-qt5-base \
     mingw-w64-qt5-declarative \
@@ -55,7 +56,7 @@ RUN sed -i 's/-mwindows//g' /usr/x86_64-w64-mingw32/lib/cmake/SDL2/sdl2-config.c
 # Give yuzu user sudo access for AUR usage
 RUN echo "yuzu ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-# Install conan and add the mingw cross compile as the default profile
+# Conan usage is deprecated
 RUN pip3 install conan
 COPY --chown=yuzu:yuzu default /home/yuzu/.conan/profiles/
 COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
