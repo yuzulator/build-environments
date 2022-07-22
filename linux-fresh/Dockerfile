@@ -40,8 +40,13 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     unzip \
     wget \
     zlib1g-dev \
-    zsync && \
-    pip3 install conan && \
+    zsync \
+# vcpkg requirements
+    curl \
+    zip \
+    && \
+# Conan usage is deprecated
+    pip3 install conan && \ 
 # Install updated versions of glslang, git, and Qt from launchpad repositories
     add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     add-apt-repository -y ppa:savoury1/graphics && \
@@ -119,5 +124,33 @@ COPY qtconcurrentthreadengine.patch /opt/qt515/qtconcurrentthreadengine.patch
 RUN patch /opt/qt515/include/QtConcurrent/qtconcurrentthreadengine.h /opt/qt515/qtconcurrentthreadengine.patch && \
     rm /opt/qt515/qtconcurrentthreadengine.patch
 
+# Install Catch2 manually in order to use older version than vcpkg provides
+RUN cd /tmp && \
+    git clone --depth 1 --branch v2.13.9 https://github.com/catchorg/Catch2.git && \
+    cmake -B build -S Catch2 -G Ninja \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCATCH_USE_VALGRIND=OFF \
+        -DCATCH_BUILD_EXAMPLES=OFF \
+        -DCATCH_ENABLE_COVERAGE=OFF \
+        -DCATCH_ENABLE_WERROR=OFF \
+        -DCATCH_BUILD_TESTING=ON && \
+    ninja -C build install && \
+    rm -rf build Catch2
+
+# Tell CMake to use vcpkg when looking for packages
+ENV VCPKG_TOOLCHAIN_FILE=/home/yuzu/vcpkg/scripts/buildsystems/vcpkg.cmake
+
 USER 1027
+# Conan usage is deprecated
 COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
+# Install vcpkg and required dependencies for yuzu
+RUN cd /home/yuzu &&\
+    git clone --depth 1 https://github.com/Microsoft/vcpkg.git &&\
+    cd vcpkg &&\
+    ./bootstrap-vcpkg.sh &&\
+    ./vcpkg install \
+        fmt \
+        lz4 \
+        nlohmann-json \
+        zlib \
+        zstd
