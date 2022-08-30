@@ -38,7 +38,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     mingw-w64-qt5-multimedia \
     mingw-w64-qt5-tools \
     mingw-w64-qt5-winextras \
-    mingw-w64-sdl2 \
     mingw-w64-tools \
     mingw-w64-winpthreads \
     mingw-w64-zlib \
@@ -51,8 +50,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
 RUN pip3 install pefile
 # Compatibility with the old Ubuntu MingW image
 RUN ln -s /usr/x86_64-w64-mingw32/lib/qt /usr/x86_64-w64-mingw32/lib/qt5
-# Get rid of -mwindows from SDL2 CMake configs
-RUN sed -i 's/-mwindows//g' /usr/x86_64-w64-mingw32/lib/cmake/SDL2/sdl2-config.cmake
 # Give yuzu user sudo access for AUR usage
 RUN echo "yuzu ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -64,6 +61,17 @@ USER 1027
 
 # Build/install small AUR packages
 RUN \
+# mingw-w64-sdl2
+    cd && \
+    git clone https://aur.archlinux.org/mingw-w64-sdl2.git && \
+    cd mingw-w64-sdl2 && \
+    # Revert to SDL 2.0.22
+    git checkout bd37953 && \
+    # Only build for x86_64
+    sed -i "s/'i686-w64-mingw32'//g" PKGBUILD && \
+    makepkg -si --noconfirm --noprogressbar && \
+    # Get rid of -mwindows from SDL2 CMake configs
+    sudo sed -i 's/-mwindows//g' /usr/x86_64-w64-mingw32/lib/cmake/SDL2/sdl2-config.cmake && \
 # mingw-w64-clang -- MinGW wrapper for host clang
     cd && \
     git clone https://aur.archlinux.org/mingw-w64-wclang-git.git && \
