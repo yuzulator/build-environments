@@ -36,8 +36,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     ninja-build \
     patchelf \
     pkg-config \
-    python3-pip \
-    python3-setuptools \
     software-properties-common \
     unzip \
     wget \
@@ -47,8 +45,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     curl \
     zip \
     && \
-# Conan usage is deprecated
-    pip3 install conan && \ 
 # Install updated versions of glslang, git, and Qt from launchpad repositories
     add-apt-repository -y ppa:beineri/opt-qt-${QT_VER}-${UBUNTU_VER} && \
     add-apt-repository -y ppa:savoury1/graphics && \
@@ -143,8 +139,6 @@ RUN cd /tmp && \
 ENV VCPKG_TOOLCHAIN_FILE=/home/yuzu/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 USER 1027
-# Conan usage is deprecated
-COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
 # Install vcpkg and required dependencies for yuzu
 RUN cd /home/yuzu &&\
     git clone --depth 1 --branch ${VCPKG_VER} https://github.com/Microsoft/vcpkg.git &&\
