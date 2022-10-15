@@ -53,10 +53,6 @@ RUN ln -s /usr/x86_64-w64-mingw32/lib/qt /usr/x86_64-w64-mingw32/lib/qt5
 # Give yuzu user sudo access for AUR usage
 RUN echo "yuzu ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-# Conan usage is deprecated
-RUN pip3 install conan
-COPY --chown=yuzu:yuzu default /home/yuzu/.conan/profiles/
-COPY --chown=yuzu:yuzu settings.yml /home/yuzu/.conan/settings.yml
 USER 1027
 
 # Build/install small AUR packages
