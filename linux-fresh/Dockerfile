@@ -7,7 +7,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV GCC_VER=11.3.0
 ENV QT_PKG_VER=515
 ENV QT_VER=5.15.2
-ENV VCPKG_VER=2022.07.25
 ENV UBUNTU_VER=bionic
 
 # Create a user account yuzu (UID 1027) that the container will run as
@@ -141,7 +140,7 @@ ENV VCPKG_TOOLCHAIN_FILE=/home/yuzu/vcpkg/scripts/buildsystems/vcpkg.cmake
 USER 1027
 # Install vcpkg and required dependencies for yuzu
 RUN cd /home/yuzu &&\
-    git clone --depth 1 --branch ${VCPKG_VER} https://github.com/Microsoft/vcpkg.git &&\
+    git clone --depth 1 https://github.com/Microsoft/vcpkg.git &&\
     cd vcpkg &&\
     ./bootstrap-vcpkg.sh &&\
     ./vcpkg install \
