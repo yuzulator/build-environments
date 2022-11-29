@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 LABEL maintainer="yuzu"
 
 ENV CLANG_VER=14
-ENV CMAKE_VER=3.16.9
+ENV CMAKE_VER=3.22.6
 ENV DEBIAN_FRONTEND=noninteractive
 ENV GCC_VER=11.3.0
 ENV QT_PKG_VER=515
@@ -81,9 +81,9 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
 # Install CMake from upstream
 # yuzu requires CMake version 3.15, however Ubuntu only provides 3.10 to Bionic.
 RUN cd /tmp && \
-    wget --no-verbose https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
-    tar xvf cmake-${CMAKE_VER}-Linux-x86_64.tar.gz && \
-    cp -rv cmake-${CMAKE_VER}-Linux-x86_64/* /usr && \
+    wget --no-verbose https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-linux-x86_64.tar.gz && \
+    tar xvf cmake-${CMAKE_VER}-linux-x86_64.tar.gz && \
+    cp -rv cmake-${CMAKE_VER}-linux-x86_64/* /usr && \
     rm -rf cmake-*
 
 # Install Boost 1.79.0 from yuzu-emu/ext-linux-bin
