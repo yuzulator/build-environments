@@ -61,7 +61,8 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && \
     qt${QT_PKG_VER}tools \
     qt${QT_PKG_VER}wayland \
     qt${QT_PKG_VER}multimedia \
-    qt${QT_PKG_VER}webengine && \
+    qt${QT_PKG_VER}webengine \
+    qt${QT_PKG_VER}x11extras && \
 # Install clang from apt.llvm.org
     wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     echo "deb http://apt.llvm.org/${UBUNTU_VER}/ llvm-toolchain-${UBUNTU_VER}-${CLANG_VER} main" >> /etc/apt/sources.list && \
