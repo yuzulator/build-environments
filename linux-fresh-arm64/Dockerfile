@@ -68,7 +68,7 @@ ENV VCPKG_FORCE_SYSTEM_BINARIES=1
 USER 1027
 # Install vcpkg and required dependencies for yuzu
 RUN cd /home/yuzu &&\
-    git clone --depth 1 https://github.com/Microsoft/vcpkg.git &&\
+    git clone --branch 2022.08.15 --depth 1 https://github.com/Microsoft/vcpkg.git &&\
     cd vcpkg &&\
     ./bootstrap-vcpkg.sh &&\
     ./vcpkg install \
