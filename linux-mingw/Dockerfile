@@ -26,7 +26,6 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     p7zip \
     cmake \
     ninja \
-    mingw-w64-boost \
     mingw-w64-gcc \
     mingw-w64-libusb \
     mingw-w64-lz4 \
@@ -45,6 +44,12 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     && \
     pacman -Scc --noconfirm && \
     rm -rf /usr/share/man/ /tmp/* /var/tmp/ /usr/{i686-w64-mingw32,lib32} /usr/lib/gcc/i686-w64-mingw32
+
+# Install Boost from yuzu-emu/ext-linux-bin
+RUN wget --no-verbose \
+        https://github.com/yuzu-emu/ext-linux-bin/raw/main/mingw/mingw-w64-boost-1.79.0-1-any.pkg.tar.zst && \
+    pacman -U --noconfirm mingw-w64-boost-1.79.0-1-any.pkg.tar.zst && \
+    rm mingw-w64-boost-1.79.0-1-any.pkg.tar.zst
 
 # Setup extra mingw work arounds
 RUN pip3 install pefile
