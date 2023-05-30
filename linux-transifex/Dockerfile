@@ -12,6 +12,7 @@ RUN apt-get install -y \
     git \
     glslang-tools \
     libavcodec-dev \
+    libavfilter-dev \
     libavutil-dev \
     liblz4-dev \
     libopus-dev \
