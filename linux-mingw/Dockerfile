@@ -66,8 +66,8 @@ RUN \
     cd && \
     git clone https://aur.archlinux.org/mingw-w64-sdl2.git && \
     cd mingw-w64-sdl2 && \
-    # Revert to SDL 2.0.22
-    git checkout bd37953 && \
+    # Revert to SDL 2.26.4
+    git checkout 277c44a && \
     # Only build for x86_64
     sed -i "s/'i686-w64-mingw32'//g" PKGBUILD && \
     makepkg -si --noconfirm --noprogressbar && \
