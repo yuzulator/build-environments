@@ -20,6 +20,8 @@ RUN useradd -m -u 1027 -s /bin/bash yuzu && mkdir -p /tmp/pkgs && \
     wget \
     git \
     glslang \
+# TODO: Remove python-pip after a reasonable amount of time has passed to let yuzu PRs rebase its scripts
+    python-pefile \
     python-pip \
     python \
     ccache \
@@ -51,8 +53,6 @@ RUN wget --no-verbose \
     pacman -U --noconfirm mingw-w64-boost-1.79.0-1-any.pkg.tar.zst && \
     rm mingw-w64-boost-1.79.0-1-any.pkg.tar.zst
 
-# Setup extra mingw work arounds
-RUN pip3 install pefile
 # Compatibility with the old Ubuntu MingW image
 RUN ln -s /usr/x86_64-w64-mingw32/lib/qt /usr/x86_64-w64-mingw32/lib/qt5
 # Give yuzu user sudo access for AUR usage
