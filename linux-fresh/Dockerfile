@@ -101,21 +101,21 @@ RUN cd /tmp && \
     cp -rv cmake-${CMAKE_VER}-linux-x86_64/* /usr && \
     rm -rf cmake-*
 
-# Install Boost from yuzu-emu/ext-linux-bin
+# Install Boost from yuzulator/ext-linux-bin
 RUN cd /tmp && \
-    wget --no-verbose https://github.com/yuzu-emu/ext-linux-bin/raw/main/boost/boost-${BOOST_VER}.tar.xz && \
+    wget --no-verbose https://github.com/yuzulator/ext-linux-bin/raw/main/boost/boost-${BOOST_VER}.tar.xz && \
     tar xvf boost-${BOOST_VER}.tar.xz && \
     chown -R root:root boost-${BOOST_VER}/ && \
     cp -rv boost-${BOOST_VER}/usr / && \
     rm -rf boost*
 
-# Install GCC from yuzu-emu/ext-linux-bin
+# Install GCC from yuzulator/ext-linux-bin
 RUN cd /tmp && \
     wget --no-verbose \
-        https://github.com/yuzu-emu/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.aa \
-        https://github.com/yuzu-emu/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ab \
-        https://github.com/yuzu-emu/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ac \
-        https://github.com/yuzu-emu/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ad && \
+        https://github.com/yuzulator/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.aa \
+        https://github.com/yuzulator/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ab \
+        https://github.com/yuzulator/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ac \
+        https://github.com/yuzulator/ext-linux-bin/raw/main/gcc/gcc-${GCC_VER}-ubuntu.tar.xz.ad && \
     cat gcc-${GCC_VER}-ubuntu.tar.xz.* | tar xJ && \
     cp -rv gcc-${GCC_VER}/usr / && \
     rm -rf /tmp/gcc* && \
@@ -128,10 +128,10 @@ RUN cd /tmp && \
     ln -sv /usr/local/lib/gcc/x86_64-pc-linux-gnu/${GCC_VER} /usr/lib/gcc/x86_64-linux-gnu/${GCC_VER} && \
     cp -rv /usr/local/include/c++/${GCC_VER}/x86_64-pc-linux-gnu/* /usr/local/include/c++/${GCC_VER}/
 
-# Install GNU binutils from yuzu-emu/ext-linux-bin
+# Install GNU binutils from yuzulator/ext-linux-bin
 RUN cd /tmp && \
     wget --no-verbose \
-        https://github.com/yuzu-emu/ext-linux-bin/raw/main/binutils/binutils-${GNU_BIN_VER}-${UBUNTU_VER}.tar.xz && \
+        https://github.com/yuzulator/ext-linux-bin/raw/main/binutils/binutils-${GNU_BIN_VER}-${UBUNTU_VER}.tar.xz && \
     tar xf binutils-${GNU_BIN_VER}-${UBUNTU_VER}.tar.xz && \
     cp -rv binutils-${GNU_BIN_VER}-${UBUNTU_VER}/usr / && \
     rm -rf /tmp/binutils*
