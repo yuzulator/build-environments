@@ -31,4 +31,4 @@ jobs:
       with:
         push: ${{ (github.ref == 'refs/heads/main') && (github.repository == 'yuzulator/build-environments') }}
         context: ${{ matrix.image }}
-        tags: yuzuemu/build-environments:${{ matrix.image }}
+        tags: yuzulator/build-environments:${{ matrix.image }}
