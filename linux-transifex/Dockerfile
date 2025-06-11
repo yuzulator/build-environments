@@ -1,5 +1,5 @@
 FROM debian:bullseye-slim
-LABEL maintainer="yuzuemu"
+LABEL maintainer="yuzulator"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV CMAKE_VER=3.22.6
